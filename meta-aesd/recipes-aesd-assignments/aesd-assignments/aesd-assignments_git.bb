@@ -8,7 +8,7 @@ SRC_URI = "git://git@github.com/cu-ecen-aeld/assignments-3-and-later-AVSidorov;p
 
 PV = "1.0+git${SRCPV}"
 # TODO: set to reference a specific commit hash in your assignment repo
-SRCREV = "c847f7b604e88a07c980bf0b1a27e12cb9a90d30"
+SRCREV = "6599ce3f9379483db5fae8744e82be59af1fa4f0"
 
 # This sets your staging directory based on WORKDIR, where WORKDIR is defined at 
 # https://docs.yoctoproject.org/ref-manual/variables.html?highlight=workdir#term-WORKDIR
@@ -23,11 +23,11 @@ FILES:${PN} += "${bindir}/aesdsocket"
 
 # TODO: customize these as necessary for any libraries you need for your application
 # (and remove comment)
-TARGET_LDFLAGS += "-lpthread -lrt"
+TARGET_LDFLAGS += "-lpthread -pthread -lrt"
 
-# inherit update-rc.d
-# INITSCRIPT_PACKAGES += "${PN}"
-# INITSCRIPT_NAME:${PN} = "aesdsocket-start-stop.sh"
+inherit update-rc.d
+INITSCRIPT_PACKAGES += "${PN}"
+INITSCRIPT_NAME:${PN} = "aesdsocket-start-stop.sh"
 
 
 do_configure () {
@@ -42,7 +42,7 @@ do_install () {
 
 	install -d ${D}${bindir}/
 	install -m 0755 ${S}/aesdsocket ${D}${bindir}/
-# 	install -d ${D}${sysconfdir}/init.d
-# 	install -m 0755 ${S}/aesdsocket-start-stop.sh ${D}${sysconfdir}/init.d
-# #	update-rc.d aesdsocket defaults
+ 	install -d ${D}${sysconfdir}/init.d
+ 	install -m 0755 ${S}/aesdsocket-start-stop.sh ${D}${sysconfdir}/init.d
+
 }
